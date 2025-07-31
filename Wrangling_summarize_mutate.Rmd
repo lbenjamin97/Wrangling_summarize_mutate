@@ -181,9 +181,10 @@ The name length_hrs is chosen to clearly indicate that the new column represents
 
 The variables `r1`, `r2`, ..., `r10` give you the percent of people who rated that movie a 1, 2, ..., 10. We would like to know the percent of people who rated the movie a 4 or less (i.e., who rated it a 1, 2, 3, or 4). Create a new variable called `per_low` that computes that number.
 
-```{r eval=FALSE}
+```{r}
 movies <- movies %>%
-  mutate(per_low = # fill in some commands here!)
+  mutate(per_low = r1 + r2 + r3 + r4)
+
 ```
 
 ## Putting it together
@@ -197,10 +198,24 @@ Now that we have a bunch of wrangling skills, let's put them together.
 To accomplish that last task, we need a specialty function, `n`. Here's how it works
 
 ```{r}
-movies %>%
-  summarize(n())
+high_low_rated <- movies %>%
+  filter(per_low > 50)
+```
+```{r}
+high_low_rated_votes <- movies %>%
+  filter(per_low > 50, votes > 5)
+```
+
+```{r}
+high_low_rated_votes %>%
+  summarize(count = n())
 ```
 
 - what is the average length of movies in the dataset, in hours? 
 - can you find a second way to compute the average length, by flipping the order of commands (i.e., `summarize` first and then `mutate`)?
 
+```{r}
+movies <- movies %>%
+  mutate(
+    bad_movie = if_else(per_low > 50 & votes > 5, TRUE, FALSE))
+```
