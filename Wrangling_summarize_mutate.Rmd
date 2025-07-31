@@ -35,6 +35,17 @@ movies %>%
 # Deriving information
 
 So far, you have learned "verbs" for isolating data, `select`, `filter`, `arrange`. Now, we will learn verbs for deriving information, `summarize`, and `mutate`. There is an additional verb, `group_by`, which is useful in conjunction with these verbs, but not as much on its own. 
+ 
+
+
+```{r}
+movies %>%
+  summarize(
+    earliest_year = min(year, na.rm = TRUE),      # earliest movie release year
+    avg_length = mean(length, na.rm = TRUE),      # average movie length (minutes)
+    sd_length = sd(length, na.rm = TRUE)          # standard deviation of length
+  )
+```
 
 ## summarize
 
@@ -44,7 +55,8 @@ Let's say we want to know the average budget of the movies in the `movies` datas
 
 ```{r}
 movies %>%
-  summarize(mean(budget))
+  drop_na(budget) %>%             
+  summarize(avg_budget = mean(budget))
 ```
 
 Unfortunately, there are many missing (or Not Available) values in `budget`, so we need to remove those in our pipeline.
@@ -52,7 +64,8 @@ Unfortunately, there are many missing (or Not Available) values in `budget`, so 
 ```{r}
 movies %>%
   drop_na(budget) %>%
-  summarize(mean(budget))
+  summarize(avg_budget = mean(budget))
+
 ```
 
 Notice that this pipeline does not change the `movies` dataset in our environment. The NA values are still present in the data, and the entire dataset is just how it started.  We just `summarize`d the data down to a single number in our Console or RMarkdown document. 
@@ -62,7 +75,11 @@ If we want, we can add additional statistics to our `summarize` command,
 ```{r}
 movies %>%
   drop_na(budget) %>%
-  summarize(mean(budget), max(budget))
+  summarize(
+    avg_budget = mean(budget),
+    max_budget = max(budget)
+  )
+
 ```
 
 We can also name the statistics we compute, so we could refer to them later.
@@ -83,9 +100,14 @@ Now, you try it!
 
 You may want to look at the "data transformation with dplyr" cheatsheet to review some possible summary functions. 
 
-```{r eval=FALSE}
+```{r}
 movies %>%
-  summarize(# fill in some commands here!)
+  summarize(
+    earliest_year = min(year, na.rm = TRUE),    # earliest movie release year
+    avg_length = mean(length, na.rm = TRUE),    # average movie length (minutes)
+    sd_length = sd(length, na.rm = TRUE)        # standard deviation of length
+  )
+
 ```
 
 ## group_by
