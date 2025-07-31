@@ -118,10 +118,14 @@ This is useful if want to compute summary statistics by group. For example, we m
 
 We already know how to compute the average length of movies overall. What we need to add to our pipeline is a `group_by`
 
-```{r eval=FALSE}
+```{r}
 movies %>%
   group_by(Action) %>%
-  # move your summarize code from the last exercise here!
+  summarize(
+    avg_length = mean(length, na.rm = TRUE),
+    sd_length = sd(length, na.rm = TRUE)
+  )
+
 ```
 
 Which movies are longer, action movies or non-action movies? 
@@ -133,10 +137,14 @@ Investigate the movies classified as Short. Are they actually shorter than other
 - What is the average length? 
 - What is the minimum length?
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 movies %>%
-  group_by(# fill in some commands here!) %>%
-  summarize(# fill in some commands here!)
+  group_by(Short) %>%
+  summarize(
+    avg_length = mean(length, na.rm = TRUE),
+    min_length = min(length, na.rm = TRUE)
+  )
+
 ```
 
 
@@ -154,9 +162,20 @@ movies <- movies %>%
 Let's read this code carefully. 
 
 - what does the `<-` do?
+This line updates the movies dataset by adding a new column length_hrs, which contains the movie lengths in hours. The original movies dataset is overwritten with this updated version.
+
 - why are we writing `/60`?
+The /60 is used to convert movie lengths from minutes to hours. Since there are 60 minutes in an hour, dividing the length (in minutes) by 60 gives the duration in hours:
+
 - what does the `=` do?
+Within the mutate() function, the = operator is used to assign a name to the new column. Here, length_hrs is the name of the new column being created.
+
+
+
 - why did we use the name `length_hrs`?
+The name length_hrs is chosen to clearly indicate that the new column represents the movie length in hours. Naming columns descriptively helps in understanding the data and makes the code more readable and maintainable.
+
+
 
 ### Your turn
 
