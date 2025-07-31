@@ -12,9 +12,24 @@ library(ggplot2movies)
 library(ggformula)
 ```
 
+
 ```{r}
-# This loads the data from the ggplot2movies package
+movies %>%
+  group_by(Short) %>%
+  summarize(avg_length = mean(length, na.rm = TRUE),
+            min_length = min(length, na.rm = TRUE))
+
+
 data(movies)
+```
+
+
+#### ✅ Suggested Code:
+```{r}
+movies %>%
+  group_by(Action) %>%
+  summarize(avg_length = mean(length, na.rm = TRUE),
+            sd_length = sd(length, na.rm = TRUE))
 ```
 
 # Deriving information
